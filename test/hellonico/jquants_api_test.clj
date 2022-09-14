@@ -28,3 +28,8 @@
   (testing "listed info code:86970"
     (is (= (load-expected "listed_info_86970.json")
            (listed-info {:code 86970})))))
+
+(deftest listed-sections-test
+  (testing "listed sections"
+    (is (= (load-expected "listed_sections.json")
+           (listed-sections {})))))

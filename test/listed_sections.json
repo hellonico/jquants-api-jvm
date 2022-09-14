@@ -1,0 +1,140 @@
+{
+    "sections": [
+      {
+        "SectorCode": "7150",
+        "SectorName": "保険業"
+      },
+      {
+        "SectorCode": "5250",
+        "SectorName": "情報・通信業"
+      },
+      {
+        "SectorCode": "7100",
+        "SectorName": "証券、商品先物取引業"
+      },
+      {
+        "SectorCode": "3350",
+        "SectorName": "ゴム製品"
+      },
+      {
+        "SectorCode": "7050",
+        "SectorName": "銀行業"
+      },
+      {
+        "SectorCode": "1050",
+        "SectorName": "鉱業"
+      },
+      {
+        "SectorCode": "6050",
+        "SectorName": "卸売業"
+      },
+      {
+        "SectorCode": "3150",
+        "SectorName": "パルプ・紙"
+      },
+      {
+        "SectorCode": "3650",
+        "SectorName": "電気機器"
+      },
+      {
+        "SectorCode": "3800",
+        "SectorName": "その他製品"
+      },
+      {
+        "SectorCode": "6100",
+        "SectorName": "小売業"
+      },
+      {
+        "SectorCode": "9050",
+        "SectorName": "サービス業"
+      },
+      {
+        "SectorCode": "5100",
+        "SectorName": "海運業"
+      },
+      {
+        "SectorCode": "3600",
+        "SectorName": "機械"
+      },
+      {
+        "SectorCode": "5150",
+        "SectorName": "空運業"
+      },
+      {
+        "SectorCode": "3700",
+        "SectorName": "輸送用機器"
+      },
+      {
+        "SectorCode": "3500",
+        "SectorName": "非鉄金属"
+      },
+      {
+        "SectorCode": "5200",
+        "SectorName": "倉庫・運輸関連業"
+      },
+      {
+        "SectorCode": "3550",
+        "SectorName": "金属製品"
+      },
+      {
+        "SectorCode": "2050",
+        "SectorName": "建設業"
+      },
+      {
+        "SectorCode": "8050",
+        "SectorName": "不動産業"
+      },
+      {
+        "SectorCode": "3450",
+        "SectorName": "鉄鋼"
+      },
+      {
+        "SectorCode": "3300",
+        "SectorName": "石油・石炭製品"
+      },
+      {
+        "SectorCode": "3400",
+        "SectorName": "ガラス・土石製品"
+      },
+      {
+        "SectorCode": "3050",
+        "SectorName": "食料品"
+      },
+      {
+        "SectorCode": "5050",
+        "SectorName": "陸運業"
+      },
+      {
+        "SectorCode": "3750",
+        "SectorName": "精密機器"
+      },
+      {
+        "SectorCode": "3250",
+        "SectorName": "医薬品"
+      },
+      {
+        "SectorCode": "7200",
+        "SectorName": "その他金融業"
+      },
+      {
+        "SectorCode": "3100",
+        "SectorName": "繊維製品"
+      },
+      {
+        "SectorCode": "4050",
+        "SectorName": "電気・ガス業"
+      },
+      {
+        "SectorCode": "9999",
+        "SectorName": "(その他)"
+      },
+      {
+        "SectorCode": "3200",
+        "SectorName": "化学"
+      },
+      {
+        "SectorCode": "0050",
+        "SectorName": "水産・農林業"
+      }
+    ]
+  }
