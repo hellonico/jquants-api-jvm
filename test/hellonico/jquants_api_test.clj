@@ -27,7 +27,10 @@
 (deftest listed-info-test
   (testing "listed info code:86970"
     (is (= (load-expected "listed_info_86970.json")
-           (listed-info {:code 86970})))))
+           (listed-info {:code 86970}))))
+  (testing "listed info code does not exist"
+    (is (= (load-expected "listed_info_empty.json")
+           (listed-info {:code 10000})))))
 
 (deftest listed-sections-test
   (testing "listed sections"
