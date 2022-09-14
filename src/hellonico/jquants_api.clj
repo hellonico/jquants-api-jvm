@@ -11,10 +11,16 @@
 
 (def api-base "https://api.jpx-jquants.com/v1/")
 
-(defn refresh-refresh-token []
+(defn refresh-refresh-token [ & args ]
   (let [body (json/generate-string (read-string (slurp login-file)))
-        resp (http/post (str api-base "token/auth_user") {:body body})]
-    (println (json/parse-string (@resp :body) true))))
+        resp (http/post (str api-base "token/auth_user") {:body body})
+        edn (json/parse-string (@resp :body) true)
+        ]
+    (println edn)
+    edn))
+
+(defn refresh-refresh-token-file[ & args]
+  (spit refresh-token-file (refresh-refresh-token)))
 
 (defn refresh-id-token [& args]
   (let [refreshToken  ((read-string (slurp refresh-token-file)) :refreshToken)
@@ -26,13 +32,14 @@
         ]
     (println edn)
     edn))
+
 (defn refresh-id-token-file [ & args]
     (spit id-token-file (refresh-id-token)))
 
-(defn get-id-token []
+(defn- get-id-token []
   ((read-string (slurp id-token-file)) :idToken))
 
-(defn authorization-headers []
+(defn- authorization-headers []
   {:headers {"Authorization" (str "Bearer " (get-id-token))}})
 
 (defn get-json [endpoint]

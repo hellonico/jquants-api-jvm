@@ -37,7 +37,11 @@
     (is (= (load-expected "listed_sections.json")
            (listed-sections {})))))
 
-(deftest refresh-id-token-file-test
-  (testing "listed sections"
-    (let [ res (refresh-id-token)]
-    (is (contains? res :idToken)))))
+(deftest refresh-tokens-test
+  (testing "refresh id token"
+    (let [res (refresh-id-token)]
+      (is (contains? res :idToken))))
+
+  (testing "refresh refresh token"
+    (let [res (refresh-refresh-token)]
+      (is (contains? res :refreshToken)))))
