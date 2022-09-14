@@ -1,5 +1,6 @@
 (ns hellonico.jquants-api
   (:require [cheshire.core :as json])
+  (:require [clojure.tools.logging :as log])
   (:require [org.httpkit.client :as http]))
 
 
@@ -12,14 +13,21 @@
 
 (defn refresh-refresh-token []
   (let [body (json/generate-string (read-string (slurp login-file)))
-        resp (http/post "https://api.jpx-jquants.com/v1/token/auth_user" {:body body})]
+        resp (http/post (str api-base "token/auth_user") {:body body})]
     (println (json/parse-string (@resp :body) true))))
 
-(defn refresh-id-token []
+(defn refresh-id-token [& args]
   (let [refreshToken  ((read-string (slurp refresh-token-file)) :refreshToken)
-        url (str "https://api.jpx-jquants.com/v1/token/auth_refresh?refreshtoken=" refreshToken)
-        resp (http/post url)]
-    (json/parse-string (:body @resp) true)))
+        url (str api-base "token/auth_refresh?refreshtoken=" refreshToken)
+        resp (http/post url)
+        ; _ (log/info ">" url)
+        body (:body @resp)
+        edn (json/parse-string body true)
+        ]
+    (println edn)
+    edn))
+(defn refresh-id-token-file [ & args]
+    (spit id-token-file (refresh-id-token)))
 
 (defn get-id-token []
   ((read-string (slurp id-token-file)) :idToken))
@@ -33,7 +41,7 @@
     (println body)
     (json/parse-string body true)))
 
-(defn listed-sections [args]
+(defn listed-sections [& args]
   (get-json (str api-base "listed/sections")))
 
 (defn listed-info [args]
