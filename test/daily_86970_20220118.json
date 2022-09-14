@@ -1,0 +1,20 @@
+{
+  "daily_quotes": [
+    {
+      "Code": "86970",
+      "Close": 2465.0,
+      "Date": "20220118",
+      "AdjustmentHigh": 2489.0,
+      "Volume": 498800.0,
+      "TurnoverValue": 1230280500.0,
+      "AdjustmentClose": 2465.0,
+      "AdjustmentLow": 2440.5,
+      "Low": 2440.5,
+      "High": 2489.0,
+      "Open": 2482.0,
+      "AdjustmentOpen": 2482.0,
+      "AdjustmentFactor": 1.0,
+      "AdjustmentVolume": 498800.0
+    }
+  ]
+}
