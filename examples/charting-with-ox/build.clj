@@ -3,8 +3,8 @@
   (:require [clojure.tools.build.api :as b] ; for b/git-count-revs
             [org.corfield.build :as bb]))
 
-(def lib 'hellonico/jquants-api)
-(def version "0.1.0")
+(def lib 'net.clojars.hellonico/charting-with-ox)
+(def version "0.1.0-SNAPSHOT")
 #_ ; alternatively, use MAJOR.MINOR.COMMITS:
 (def version (format "1.0.%s" (b/git-count-revs nil)))
 

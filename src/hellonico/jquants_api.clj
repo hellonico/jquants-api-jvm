@@ -1,13 +1,16 @@
 (ns hellonico.jquants-api
   (:require [cheshire.core :as json])
   (:require [clojure.tools.logging :as log])
-  (:require [org.httpkit.client :as http]))
+  (:require [org.httpkit.client :as http])
+  (:require [next.jdbc :as jdbc] [clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
 
 
-(def config-folder (str (System/getProperty "user.home") "/.config/digima/" ))
+(def config-folder (str (System/getProperty "user.home") "/.config/digima" ))
 (def login-file (str config-folder "/login.edn" ))
 (def refresh-token-file (str config-folder "/refresh_token.edn"))
 (def id-token-file (str config-folder "/id_token.edn"))
+(def cache-db (str config-folder "/jquants.db"))
+(def cache-tmp (str config-folder "/cache.edn"))
 
 (def api-base "https://api.jpx-jquants.com/v1/")
 
@@ -65,3 +68,59 @@
 (defn statements [args]
   (get-json (str api-base "fins/statements?code=" (args :code) 
                  (if (args :date) (str "&date=" (args :date)) ""))))
+
+(def db-spec {:dbtype "sqlite" :dbname cache-db})
+
+(defn- cache-create-table []
+  (jdbc/execute!
+   db-spec
+   [  "drop table if exists companies"])
+  (jdbc/execute!
+   db-spec
+   [
+    "create table if not exists companies (UpdateDate date, Code integer, CompanyNameFull text, CompanyName text, CompanyNameEnglish text, MarketCode Text, SectorCode Integer)"]))
+
+(defn cache-build [values]
+  (cache-create-table)
+  (jdbc/execute!
+   db-spec
+   (-> (h/insert-into :companies)
+       (h/values (map #(dissoc % :origin) (filter #(not (nil? (% :UpdateDate))) values)))
+       (sql/format {:pretty true}))))
+
+(defn build-db-from-file [& args]
+  (cache-build (read-string (slurp cache-tmp))))
+
+(defn cache-to-json [& args]
+  (println (json/generate-string (read-string (slurp cache-tmp)) {:pretty true})))
+
+(defn build-code-database [& args]
+  (let [raw (daily {:date 20220914}) 
+        codes (map :Code (:daily_quotes raw)) 
+        values (pmap #(assoc (first ((listed-info {:code %}) :info)) :origin %) codes)
+        ]
+    (spit cache-tmp (into [] values))
+    (cache-build values)))
+
+(def rebuild-info-cache build-code-database)
+
+(defn check-cache [& args]
+  (if (not (.exists (io/file cache-db)))
+    (rebuild-info-cache)
+    (println "Cache file exists:" cache-db)))
+
+(defn fuzzy-search [args]
+  (check-cache)
+  (let [query 
+        (str "select * from companies where "
+             (if (args :MarketCode) (str "MarketCode like '" (args :MarketCode) "%'"))
+             (if (args :SectorCode) (str "MarketCode like '" (args :SectorCode) "%'"))
+             (if (args :CompanyName) (str "CompanyNameEnglish like '" (args :CompanyName) "%'"))
+             (if (args :CompanyNameEnglish) (str "CompanyNameEnglish like '" (args :CompanyNameEnglish) "%'"))
+             (if (args :Code) (str "CompanyNameEnglish like '" (args :Code) "%'"))
+             ";")
+        res (jdbc/execute! db-spec [query])
+        ]
+    (println res)
+    res
+    ))
