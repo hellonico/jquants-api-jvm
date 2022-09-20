@@ -1,6 +1,6 @@
 # hellonico/jquants-api
 
-FIXME: my new library.
+![](doc/preview.png)
 
 ## Usage
 
