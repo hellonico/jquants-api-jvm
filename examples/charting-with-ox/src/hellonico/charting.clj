@@ -16,17 +16,27 @@
             (map average (partition period 1  coll))))
 (def ma-5 (partial ma 5))
 
-(def data2 (map #(assoc %1 :ma %2) data (ma-5 (map :High data))))
+(def _data (map #(assoc %1 :ma %2) data (ma-5 (map :High data))))
 
-(spit "test.edn" data)
+; (spit "test.edn" data)
 ; (def data (map #(assoc % :ma (ma 5 (% :High))) (raw :daily_quotes)))
 
 (def data-plot
-  {:data {:values data2}
+  {:data {:values _data}
    :encoding {:x {:field "Date" :type "ordinal"}
               :y {:field "ma" :type "quantitative"}
               :color {:field "Code" :type "nominal"}}
    :mark "line"}
   )
 
-(oz/view! data-plot)
+(def viz
+  [:div
+   [:h1 "5 days Moving average"]
+   [:p "Entity code 24130"]
+   [:p "from 20220301 to 20220328"]
+   [:vega-lite data-plot]
+   ;[:h2 "If ever, oh ever a viz there was, the vizard of oz is one because, because, because..."]
+   [:p (str (java.util.Date.))]
+   ])
+
+(oz/view! viz)
