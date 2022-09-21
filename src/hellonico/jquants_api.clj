@@ -2,7 +2,7 @@
   (:require [cheshire.core :as json])
   (:require [clojure.tools.logging :as log])
   (:require [org.httpkit.client :as http])
-  (:require [next.jdbc :as jdbc] [clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
+  (:require [next.jdbc :as jdbc] [next.jdbc.result-set :as rs][clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
 
 
 (def config-folder (str (System/getProperty "user.home") "/.config/digima" ))
@@ -69,6 +69,10 @@
   (get-json (str api-base "fins/statements?code=" (args :code) 
                  (if (args :date) (str "&date=" (args :date)) ""))))
 
+;
+;
+;
+
 (def db-spec {:dbtype "sqlite" :dbname cache-db})
 
 (defn- cache-create-table []
@@ -119,8 +123,13 @@
              (if (args :CompanyNameEnglish) (str "CompanyNameEnglish like '" (args :CompanyNameEnglish) "%'"))
              (if (args :Code) (str "CompanyNameEnglish like '" (args :Code) "%'"))
              ";")
-        res (jdbc/execute! db-spec [query])
+        res (jdbc/execute! db-spec [query] {:builder-fn rs/as-unqualified-lower-maps})
         ]
     (println res)
     res
     ))
+
+(defn daily-fuzzy[args]
+  (let[ company (first (fuzzy-search args))
+       search (merge args company)]
+  (daily search)))
