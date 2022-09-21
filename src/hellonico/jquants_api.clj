@@ -15,6 +15,9 @@
 
 (def api-base "https://api.jpx-jquants.com/v1/")
 
+(defn login[username password]
+  (spit login-file {:mailaddress   username   :password  password}))
+
 (defn refresh-refresh-token [ & args ]
   (let [body (json/generate-string (read-string (slurp login-file)))
         resp (http/post (str api-base "token/auth_user") {:body body})
