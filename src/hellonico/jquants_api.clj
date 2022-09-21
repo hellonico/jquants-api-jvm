@@ -1,9 +1,8 @@
 (ns hellonico.jquants-api
   (:require [cheshire.core :as json])
-  (:require [clojure.tools.logging :as log])
+  ; (:require [clojure.tools.logging :as log])
   (:require [org.httpkit.client :as http])
   (:require [next.jdbc :as jdbc] [next.jdbc.result-set :as rs][clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
-
 
 (def config-folder (str (System/getProperty "user.home") "/.config/digima" ))
 (def login-file (str config-folder "/login.edn" ))
@@ -11,6 +10,8 @@
 (def id-token-file (str config-folder "/id_token.edn"))
 (def cache-db (str config-folder "/jquants.db"))
 (def cache-tmp (str config-folder "/cache.edn"))
+(def ONE_DAY_IN_MS (* 24 3600 1000))
+(def SEVEN_DAYS_IN_MS (* 7 24 3600 1000))
 
 (def api-base "https://api.jpx-jquants.com/v1/")
 
@@ -45,8 +46,19 @@
 (defn- authorization-headers []
   {:headers {"Authorization" (str "Bearer " (get-id-token))}})
 
+(defn check-expired [file validity fn]
+  (let [ time-difference (- (System/currentTimeMillis) (.lastModified (io/as-file file))) ]
+    (if (> time-difference validity)
+      (fn)
+      (println "Up to date:" file " ( " time-difference " )"))))
+
+(defn check-tokens []
+  (check-expired id-token-file ONE_DAY_IN_MS refresh-id-token-file)
+  (check-expired refresh-token-file SEVEN_DAYS_IN_MS refresh-refresh-token-file))
+
 (defn get-json [endpoint]
   ;; (println "ENDPOINT:" endpoint) 
+  (check-tokens)
   (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) ]
     (println body)
     (json/parse-string body true)))
@@ -84,7 +96,7 @@
    [
     "create table if not exists companies (UpdateDate date, Code integer, CompanyNameFull text, CompanyName text, CompanyNameEnglish text, MarketCode Text, SectorCode Integer)"]))
 
-(defn cache-build [values]
+(defn- cache-build [values]
   (cache-create-table)
   (jdbc/execute!
    db-spec
