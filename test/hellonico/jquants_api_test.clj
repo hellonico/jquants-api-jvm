@@ -13,6 +13,17 @@
         (load-expected "daily_86970_20220118.json")
          (daily {:code 86970 :date 20220118})))))
 
+(deftest daily-test-multiple
+  (testing "daily code:86970 :date 20220118 (x2)"
+    (is (=
+         (into [] (repeat 2 (load-expected "daily_86970_20220118.json")))
+         (daily [{:code 86970 :date 20220118}{:code 86970 :date 20220118}])))))
+
+(deftest daily-fuzzy-test
+  (testing "daily code:86970 :date 20220118"
+    (is (= (load-expected "daily_86970_20220118.json")
+           (daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20220118})))))
+
 (deftest statements-test
   (testing "daily code:86970 :date 20220727"
     (is (= (load-expected "statements_86970_20220118.json")

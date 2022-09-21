@@ -73,12 +73,14 @@
   (get-json (str api-base "listed/info?code=" (args :code))))
 
 (defn daily [args]
-  (get-json (str api-base 
-                 "prices/daily_quotes?" 
-                 "code=" (args :code) 
-                 (if (args :to) (str "&to=" (args :to) )"")
-                 (if (args :from) (str "&from=" (args :from)) "")
-                 "&date=" (args :date) )))
+  (if (map? args)
+    (get-json (str api-base
+                   "prices/daily_quotes?"
+                   "code=" (args :code)
+                   (if (args :to) (str "&to=" (args :to)) "")
+                   (if (args :from) (str "&from=" (args :from)) "")
+                   "&date=" (args :date)))
+    (into [] (map daily args))))
 
 (defn statements [args]
   (get-json (str api-base "fins/statements?code=" (args :code) 
@@ -136,15 +138,19 @@
              (if (args :SectorCode) (str "MarketCode like '" (args :SectorCode) "%'"))
              (if (args :CompanyName) (str "CompanyNameEnglish like '" (args :CompanyName) "%'"))
              (if (args :CompanyNameEnglish) (str "CompanyNameEnglish like '" (args :CompanyNameEnglish) "%'"))
-             (if (args :Code) (str "CompanyNameEnglish like '" (args :Code) "%'"))
+             (if (args :Code) (str "Code like '" (args :Code) "%'"))
              ";")
+        _ (println query)
         res (jdbc/execute! db-spec [query] {:builder-fn rs/as-unqualified-lower-maps})
         ]
     (println res)
     res
     ))
 
-(defn daily-fuzzy[args]
-  (let[ company (first (fuzzy-search args))
-       search (merge args company)]
-  (daily search)))
+(defn daily-fuzzy [args]
+  (println "is map:" (map? args))
+  (if (map? args)
+    (let [company (first (fuzzy-search args))
+          search (merge args company)]
+      (daily search))
+    (into [] (map daily-fuzzy args))))
