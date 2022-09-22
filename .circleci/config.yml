@@ -1,0 +1,8 @@
+jobs:
+  build:
+    docker:
+      - image: cimg/clojure:1.11.1
+    steps:
+      - checkout
+      - run: mkdir -p $HOME/.config/digima && echo "{:mailaddress \"$JQUANTS_USER\" :password \"$JQUANTS_PWD\"}" > $HOME/.config/digima/login.edn
+      - run: clojure -T:build ci

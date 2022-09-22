@@ -1,5 +1,6 @@
 (ns hellonico.jquants-api
-  (:require [cheshire.core :as json])
+  (:require [cheshire.core :as json]
+            [clojure.java.io :as jio])
   ; (:require [clojure.tools.logging :as log])
   (:require [org.httpkit.client :as http])
   (:require [next.jdbc :as jdbc] [next.jdbc.result-set :as rs][clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
@@ -15,8 +16,10 @@
 
 (def api-base "https://api.jpx-jquants.com/v1/")
 
-(defn login[username password]
-  (spit login-file {:mailaddress   username   :password  password}))
+(defn login [& args]
+  (println args)
+  (clojure.java.io/make-parents login-file)
+  (spit login-file {:mailaddress  (:mailaddress (first args))  :password  (:password (first args))}))
 
 (defn refresh-refresh-token [ & args ]
   (let [body (json/generate-string (read-string (slurp login-file)))
@@ -50,14 +53,16 @@
   {:headers {"Authorization" (str "Bearer " (get-id-token))}})
 
 (defn check-expired [file validity fn]
-  (let [ time-difference (- (System/currentTimeMillis) (.lastModified (io/as-file file))) ]
-    (if (> time-difference validity)
-      (fn)
-      (println "Up to date:" file " ( " time-difference " )"))))
+  (if (not (.exists (clojure.java.io/as-file file)))
+    (fn)
+    (let [time-difference (- (System/currentTimeMillis) (.lastModified (io/as-file file)))]
+      (if (> time-difference validity)
+        (fn)
+        (println "Up to date:" file " ( " time-difference " )")))))
 
 (defn check-tokens []
-  (check-expired id-token-file ONE_DAY_IN_MS refresh-id-token-file)
-  (check-expired refresh-token-file SEVEN_DAYS_IN_MS refresh-refresh-token-file))
+  (check-expired refresh-token-file SEVEN_DAYS_IN_MS refresh-refresh-token-file)
+  (check-expired id-token-file ONE_DAY_IN_MS refresh-id-token-file))
 
 (defn get-json [endpoint]
   ;; (println "ENDPOINT:" endpoint) 
