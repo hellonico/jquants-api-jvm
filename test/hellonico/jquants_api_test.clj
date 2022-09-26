@@ -37,8 +37,9 @@
 
 (deftest listed-info-test
   (testing "listed info code:86970"
-    (is (= (load-expected "listed_info_86970.json")
-           (listed-info {:code 86970}))))
+    (is (=
+         (dissoc (first (:info (load-expected "listed_info_86970.json"))) :UpdateDate)
+         (dissoc (first (:info (listed-info {:code 86970}))) :UpdateDate))))
   (testing "listed info code does not exist"
     (is (= (load-expected "listed_info_empty.json")
            (listed-info {:code 10000})))))
