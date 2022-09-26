@@ -60,8 +60,8 @@ The returned data structure for either call is according the jquants api, turned
 
 Invoke a library API function from the command-line:
 
-    $ clojure -X hellonico.jquants-api/foo :a 1 :b '"two"'
-    {:a 1, :b "two"} "Hello, World!"
+    $ clojure -X hellonico.jquants-api/daily-fuzzy {:CompanyNameEnglish "KAWASE" :date 20220920} 
+    
 
 Run the project's tests (they'll fail until you edit them):
 

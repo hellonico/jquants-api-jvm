@@ -1,7 +1,7 @@
 (ns hellonico.jquants-api
   (:require [cheshire.core :as json]
             [clojure.java.io :as jio])
-  ; (:require [clojure.tools.logging :as log])
+  (:require [clojure.tools.logging :as log])
   (:require [org.httpkit.client :as http])
   (:require [next.jdbc :as jdbc] [next.jdbc.result-set :as rs][clojure.java.io :as io][honey.sql :as sql] [honey.sql.helpers :as h]))
 
@@ -58,7 +58,7 @@
     (let [time-difference (- (System/currentTimeMillis) (.lastModified (io/as-file file)))]
       (if (> time-difference validity)
         (fn)
-        (println "Up to date:" file " ( " time-difference " )")))))
+        (log/log 'jquants.internal :debug nil (str "Token up to date:" file " ( " time-difference " )"))))))
 
 (defn check-tokens []
   (check-expired refresh-token-file SEVEN_DAYS_IN_MS refresh-refresh-token-file)
@@ -66,10 +66,15 @@
 
 (defn get-json [endpoint]
   ;; (println "ENDPOINT:" endpoint) 
+  (log/log 'jquants-api.http :info nil endpoint)
   (check-tokens)
-  (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) ]
+  (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body true)]
+    ; (println body)
+    ; (log/info body)
+    ; (log/log 'jquants-api.request :info nil body)
+    (log/log 'jquants-api.http :info nil body)
     (println body)
-    (json/parse-string body true)))
+    edn))
 
 (defn listed-sections [& args]
   (get-json (str api-base "listed/sections")))
@@ -133,7 +138,7 @@
 (defn check-cache [& args]
   (if (not (.exists (io/file cache-db)))
     (rebuild-info-cache)
-    (println "Cache file exists:" cache-db)))
+    (log/log 'jquants.internal :debug nil (str "Cache file exists:" cache-db))))
 
 (defn fuzzy-search [args]
   (check-cache)
@@ -145,15 +150,16 @@
              (if (args :CompanyNameEnglish) (str "CompanyNameEnglish like '" (args :CompanyNameEnglish) "%'"))
              (if (args :Code) (str "Code like '" (args :Code) "%'"))
              ";")
-        _ (println query)
         res (jdbc/execute! db-spec [query] {:builder-fn rs/as-unqualified-lower-maps})
         ]
-    (println res)
+    (log/log 'jquants.internal :info nil query)
+    (log/log 'jquants.internal :info nil res)
+    ;(println res)
     res
     ))
 
 (defn daily-fuzzy [args]
-  (println "is map:" (map? args))
+  ; (println "is map:" (map? args))
   (if (map? args)
     (let [company (first (fuzzy-search args))
           search (merge args company)]
