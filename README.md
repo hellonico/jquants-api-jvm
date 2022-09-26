@@ -1,10 +1,62 @@
 # hellonico/jquants-api
 
+[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.hellonico/jquants-api.svg)](https://clojars.org/net.clojars.hellonico/jquants-api)
+
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/hellonico/jquants-api-jvm/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/hellonico/jquants-api-jvm/tree/master)
+
+
 ![](doc/preview.png)
 
-## Usage
+# Goal
 
-FIXME: write usage documentation!
+jquants-api is a Clojure Wrapper around the [jquants api](https://jpx-jquants.com/).
+
+It is hosted on [Clojars](https://clojars.org/net.clojars.hellonico/jquants-api).
+
+The [jquants-api](https://jpx.gitbook.io/j-quants-api-en/api-reference/) propose a diverse set of daily financial data: 
+
+- Listed Issue Information
+- Stock Price Information
+- Financial Information
+
+With endpoints for each of them.
+
+To use the jquants api, You first need to [register and create an account](https://application.jpx-jquants.com/register). 
+
+![](doc/register.png)
+
+To use this API, you need to either:
+- use the login with your username and password, or
+- create a login file as shown below:
+
+```clojure
+; In $HOME/.config/digima/login.edn
+{:mailaddress "youremail@address.com" :password "yourpassword"}
+```
+
+The jquants-api specifies a refresh token and an id token to get and refresh but this wrapper will refresh those tokens as needed without the user having to do anything.
+
+# Extra Code for the Wrapper
+
+The wrapper creates a local cache to get daily quotes based on fuzzy search for the name of the entity to get the quotes from.
+
+Meaning, instead of :
+
+```clojure
+(daily {:Code 86970 :date 20220118})
+```
+
+You can do:
+```clojure
+(daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20220118})
+
+```
+
+The returned data structure for either call is according the jquants api, turned into Clojure structure / maps with keywords as keys.
+
+
+## Building
+
 
 Invoke a library API function from the command-line:
 
@@ -18,10 +70,6 @@ Run the project's tests (they'll fail until you edit them):
 Run the project's CI pipeline and build a JAR (this will fail until you edit the tests to pass):
 
     $ clojure -T:build ci
-
-This will produce an updated `pom.xml` file with synchronized dependencies inside the `META-INF`
-directory inside `target/classes` and the JAR in `target`. You can update the version (and SCM tag)
-information in generated `pom.xml` by updating `build.clj`.
 
 Install it locally (requires the `ci` task be run first):
 
