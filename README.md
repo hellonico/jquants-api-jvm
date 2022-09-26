@@ -1,6 +1,6 @@
-# hellonico/jquants-api
+# hellonico/jquants-api-jvm
 
-[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.hellonico/jquants-api.svg)](https://clojars.org/net.clojars.hellonico/jquants-api)
+[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.hellonico/jquants-api-jvm.svg)](https://clojars.org/net.clojars.hellonico/jquants-api-jvm)
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hellonico/jquants-api-jvm/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/hellonico/jquants-api-jvm/tree/master)
 
@@ -11,7 +11,7 @@
 
 jquants-api is a Clojure Wrapper around the [jquants api](https://jpx-jquants.com/).
 
-It is hosted on [Clojars](https://clojars.org/net.clojars.hellonico/jquants-api).
+It is hosted on [Clojars](https://clojars.org/net.clojars.hellonico/jquants-api-jvm).
 
 The [jquants-api](https://jpx.gitbook.io/j-quants-api-en/api-reference/) propose a diverse set of daily financial data: 
 
