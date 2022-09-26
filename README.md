@@ -1,6 +1,6 @@
 # hellonico/jquants-api-jvm
 
-[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.hellonico/jquants-api-jvm.svg)](https://clojars.org/net.clojars.hellonico/jquants-api-jvm)
+[![Clojars Project](https://img.shields.io/clojars/v/net.clojars.hellonico/jquants-api-jvm.svg?include_prereleases)](https://clojars.org/net.clojars.hellonico/jquants-api-jvm)
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hellonico/jquants-api-jvm/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/hellonico/jquants-api-jvm/tree/master)
 

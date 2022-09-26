@@ -2,11 +2,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clojars.hellonico</groupId>
-  <artifactId>jquants-api</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <artifactId>jquants-api-jvm</artifactId>
+  <version>0.2.4</version>
   <name>hellonico/jquants-api</name>
-  <description>FIXME: my new library.</description>
-  <url>https://github.com/hellonico/jquants-api</url>
+  <description>JQuantsAPI Wrapper for the JVM</description>
+  <url>https://github.com/hellonico/jquants-api-jvm</url>
   <licenses>
     <license>
       <name>Eclipse Public License</name>
