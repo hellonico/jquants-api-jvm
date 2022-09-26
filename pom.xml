@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clojars.hellonico</groupId>
   <artifactId>jquants-api-jvm</artifactId>
-  <version>0.2.4</version>
+  <version>0.2.5</version>
   <name>hellonico/jquants-api</name>
   <description>JQuantsAPI Wrapper for the JVM</description>
   <url>https://github.com/hellonico/jquants-api-jvm</url>
@@ -18,12 +18,6 @@
       <name>Niko</name>
     </developer>
   </developers>
-  <scm>
-    <url>https://github.com/hellonico/jquants-api-jvm</url>
-    <connection>scm:git:git://github.com/hellonico/jquants-api-jvm.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/hellonico/jquants-api-jvm.git</developerConnection>
-    <tag>0.2.2</tag>
-  </scm>
   <dependencies>
     <dependency>
       <groupId>org.clojure</groupId>
