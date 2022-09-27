@@ -5,7 +5,7 @@
             [org.corfield.build :as bb]))
 
 (def lib 'net.clojars.hellonico/jquants-api-jvm)
-(def version "0.2.7")
+(def version "0.2.8")
 #_ ; alternatively, use MAJOR.MINOR.COMMITS:
 (def version (format "1.0.%s" (b/git-count-revs nil)))
 
