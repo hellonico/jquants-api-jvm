@@ -1,12 +1,14 @@
 (ns hellonico.jquants-api
+  (:gen-class
+   :name hellonico.jquantsapi
+   :prefix "-"
+   :main true
+   :methods [[daily [String String] java.util.Map]])
   (:require
-   ; core
    [clojure.java.io :as io]
    [clojure.tools.logging :as log]
-   ; http
    [org.httpkit.client :as http]
    [cheshire.core :as json]
-   ; sql (for caching)
    [next.jdbc :as jdbc]
    [next.jdbc.result-set :as rs]
    [honey.sql :as sql]
@@ -74,13 +76,15 @@
   (check-expired refresh-token-file SEVEN_DAYS_IN_MS refresh-refresh-token-file)
   (check-expired id-token-file ONE_DAY_IN_MS refresh-id-token-file))
 
-(defn get-json [endpoint]
-  (log/log 'jquants-api.http :info nil endpoint)
-  (check-tokens)
-  (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body true)]
-    (log/log 'jquants-api.http :info nil body)
-    (println body)
-    edn))
+(defn get-json 
+  ([endpoint] (get-json endpoint true))
+  ([endpoint usekeywords]
+   (log/log 'jquants-api.http :info nil endpoint)
+   (check-tokens)
+   (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body usekeywords)]
+     (log/log 'jquants-api.http :info nil body)
+     (println body)
+     edn)))
 
 (defn listed-sections [& args]
   (get-json (str api-base "listed/sections")))
@@ -95,7 +99,7 @@
                    "code=" (args :code)
                    (if (args :to) (str "&to=" (args :to)) "")
                    (if (args :from) (str "&from=" (args :from)) "")
-                   "&date=" (args :date)))
+                   "&date=" (args :date)) (args :usekeywords))
     (into [] (map daily args))))
 
 (defn statements [args]
@@ -169,3 +173,11 @@
           search (merge args company)]
       (daily search))
     (into [] (map daily-fuzzy args))))
+
+; java
+
+(defn -daily [_ code date]
+  (daily {:code code :date date :usekeywords false}))
+
+(defn -main [& args]
+  (println "Does nothing yet"))
