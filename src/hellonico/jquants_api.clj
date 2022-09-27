@@ -84,7 +84,8 @@
    (log/log 'jquants-api.http :info nil (str endpoint "> [keywords:" usekeywords "]"))
    (check-tokens)
    (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body usekeywords)]
-     (log/log 'jquants-api.http :info nil body)
+     ; (log/log 'jquants-api.http :info nil body)
+     (log/log 'jquants-api.http :info nil edn)
      (println body)
      edn)))
 

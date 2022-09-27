@@ -62,11 +62,42 @@ Meaning, instead of :
 
 ```clojure
 (daily {:Code 86970 :date 20220118})
+
+;; {:daily_quotes [{:AdjustmentVolume 498800.0
+;;                  :TurnoverValue    1.2302805E9
+;;                  :AdjustmentOpen   2482.0
+;;                  :Low              2440.5
+;;                  :AdjustmentClose  2465.0
+;;                  :Volume           498800.0
+;;                  :High             2489.0
+;;                  :Date             "20220118"
+;;                  :AdjustmentHigh   2489.0
+;;                  :Code             "86970"
+;;                  :Close            2465.0
+;;                  :AdjustmentFactor 1.0
+;;                  :AdjustmentLow    2440.5
+;;                  :Open             2482.0}]}
 ```
 
 You can do:
 ```clojure
 (daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20220118})
+
+;; Same as above
+;; {:daily_quotes [{:AdjustmentVolume 498800.0
+;;                  :TurnoverValue    1.2302805E9
+;;                  :AdjustmentOpen   2482.0
+;;                  :Low              2440.5
+;;                  :AdjustmentClose  2465.0
+;;                  :Volume           498800.0
+;;                  :High             2489.0
+;;                  :Date             "20220118"
+;;                  :AdjustmentHigh   2489.0
+;;                  :Code             "86970"
+;;                  :Close            2465.0
+;;                  :AdjustmentFactor 1.0
+;;                  :AdjustmentLow    2440.5
+;;                  :Open             2482.0}]}
 ```
 
 # Charting
@@ -80,7 +111,7 @@ Which would open a browser window and show the following graph:
 # Java Integration
 
 This JQuants wrapper can also be called natively from Java code, with Maps as returned object from API calls.
-Maps in Java can be accessed using query using [JXPath](https://commons.apache.org/proper/commons-jxpath/), as shown in the example below:
+Maps in Java can be accessed using query using [JXPath](https://commons.apache.org/proper/commons-jxpath/), as shown in the [java example](./examples/JavaSample/src/main/java/info/hellonico/jquantsapi/JQuantsApiSample.java) below:
 
 ```java
 Map<?,?> result = api.daily("24130", "20220301");
