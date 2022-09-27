@@ -20,7 +20,7 @@ public class JQuantsApiSample
 
         String code = "24130";
         String date = "20220301";
-        Map result = api.daily(code, date);
+        Map<?,?> result = api.daily(code, date);
 
         Stream.of(result.keySet().toArray()).forEach(System.out::println);
 

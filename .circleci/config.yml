@@ -5,4 +5,4 @@ jobs:
     steps:
       - checkout
       - run: mkdir -p $HOME/.config/digima && echo "{:mailaddress \"$JQUANTS_USER\" :password \"$JQUANTS_PWD\"}" > $HOME/.config/digima/login.edn
-      - run: clojure -T:build ci
+      - run: clojure -T:build test
