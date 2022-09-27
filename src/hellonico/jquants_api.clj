@@ -99,7 +99,7 @@
                    "code=" (args :code)
                    (if (args :to) (str "&to=" (args :to)) "")
                    (if (args :from) (str "&from=" (args :from)) "")
-                   "&date=" (args :date)) (true? (args :usekeywords)))
+                   "&date=" (args :date)) (not (true? (args :usekeywords))))
     (into [] (map daily args))))
 
 (defn statements [args]
