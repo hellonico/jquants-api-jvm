@@ -28,7 +28,7 @@
     <dependency>
       <groupId>net.clojars.hellonico</groupId>
       <artifactId>jquants-api-jvm</artifactId>
-      <version>0.2.6</version>
+      <version>0.2.7</version>
     </dependency>
 
     <!-- xpath deps are full of vulnarabilities -->
