@@ -1,9 +1,13 @@
 package info.hellonico.jquantsapi;
 
+import com.github.signaflo.timeseries.TimeSeries;
 import hellonico.jquantsapi;
 import io.quickchart.QuickChart;
 import org.apache.commons.jxpath.JXPathContext;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -29,6 +33,8 @@ public class JQuantsApiSample {
 
         chartMe(api);
 
+        movingAverage(api);
+
         System.exit(0);
     }
 
@@ -40,6 +46,40 @@ public class JQuantsApiSample {
         Map<?,?> statements = api.statements(code, "20220727");
         JXPathContext context2 = JXPathContext.newContext(statements);
         System.out.printf("Profit: %s for Code %s\n", context2.getValue("//Profit"), code);
+    }
+
+    public static List<Double> pad(List<Double> array, int pad){
+        LinkedList<Double> list = new LinkedList();
+        list.addAll(array);
+        for(int i = 0;i<pad;i++) {
+            list.add(0,null);
+        }
+        return list;
+    }
+
+    private static void movingAverage(jquantsapi api) {
+        String from = "20220301", to = "20220401";
+        Map<?,?> result = api.daily(code, from, to);
+        JXPathContext context = JXPathContext.newContext(result);
+
+        double[] tds = context.selectNodes("//Open").stream().mapToDouble(p -> (Double) p).toArray();
+        TimeSeries ts = TimeSeries.from(tds);
+        int MOVING_AVERAGE_RANGE = 5;
+        TimeSeries ma = ts.movingAverage(MOVING_AVERAGE_RANGE);
+
+        QuickChart chart = new QuickChart();
+        chart.setWidth(500);
+        chart.setHeight(500);
+
+        String config =
+                format("{type: 'line',data: {labels: %s , datasets: [{label: 'MovingAverage', data:%s ,fill: false}]}}",
+                        context.selectNodes("//Date"),
+                        pad(ma.asList(),MOVING_AVERAGE_RANGE--)
+                        );
+        chart.setConfig(config);
+
+        System.out.println(chart.getUrl());
+
     }
 
     private static void fromTo(jquantsapi api) {

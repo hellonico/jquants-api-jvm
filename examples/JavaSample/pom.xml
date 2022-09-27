@@ -31,6 +31,12 @@
       <version>0.2.7</version>
     </dependency>
 
+    <dependency>
+      <groupId>com.github.signaflo</groupId>
+      <artifactId>timeseries</artifactId>
+      <version>0.4</version>
+    </dependency>
+
     <!-- xpath deps are full of vulnarabilities -->
     <dependency>
       <groupId>commons-jxpath</groupId>
@@ -95,8 +101,8 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <source>11</source>
+          <target>11</target>
         </configuration>
       </plugin>
     </plugins>
