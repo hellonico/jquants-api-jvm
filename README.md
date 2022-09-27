@@ -92,6 +92,30 @@ System.out.printf("Quote for %s on day %s is %f\n", code, date, open);
 // Quote for 24130 on day 20220301 is 4315.000000
 ```
 
+Another example shows how to chart using [quickchart.io](https://quickchart.io/):
+
+```java
+String from = "20220301", to = "20220505";
+Map<?,?> result = api.daily(code, from, to);
+JXPathContext context = JXPathContext.newContext(result);
+
+QuickChart chart = new QuickChart();
+chart.setWidth(500);
+chart.setHeight(300);
+String config =
+        format("{type: 'line',data: {labels: %s , datasets: [{label: 'Open', data:%s ,fill: false}, {label: 'Close', data:%s ,fill: false}]}}",
+                context.selectNodes("//Date"),
+                context.selectNodes("//Open"),
+                context.selectNodes("//Close"));
+chart.setConfig(config);
+
+System.out.println(chart.getUrl());
+```
+
+Which outputs the following graph:
+
+![](doc/javachart.webp)
+
 ## License
 
 Copyright © 2022 Niko
