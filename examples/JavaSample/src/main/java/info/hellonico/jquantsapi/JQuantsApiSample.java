@@ -23,9 +23,23 @@ public class JQuantsApiSample {
 
         simple(api);
 
+        listedInfoAndStatement(api);
+
         fromTo(api);
 
         chartMe(api);
+
+        System.exit(0);
+    }
+
+    private static void listedInfoAndStatement(jquantsapi api) {
+        Map<?,?> listedInfo = api.listedInfo(code);
+        JXPathContext context = JXPathContext.newContext(listedInfo);
+        System.out.printf("Code %s is for companyName %s\n", code, context.getValue("//CompanyNameFull"));
+
+        Map<?,?> statements = api.statements(code, "20220727");
+        JXPathContext context2 = JXPathContext.newContext(statements);
+        System.out.printf("Profit: %s for Code %s\n", context2.getValue("//Profit"), code);
     }
 
     private static void fromTo(jquantsapi api) {

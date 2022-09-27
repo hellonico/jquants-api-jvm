@@ -2,9 +2,12 @@
   (:gen-class
    :name hellonico.jquantsapi
    :prefix "-"
+   :init init
    :main true
    :methods [[daily [String String] java.util.Map]
              [daily [String String String] java.util.Map]
+             [statements [String String] java.util.Map]
+             [listedInfo [String] java.util.Map]
              ])
   (:require
    [clojure.java.io :as io]
@@ -24,6 +27,8 @@
 (def ^:no-doc cache-tmp (str config-folder "/cache.edn"))
 (def ^:no-doc ONE_DAY_IN_MS (* 24 3600 1000))
 (def ^:no-doc SEVEN_DAYS_IN_MS (* 7 24 3600 1000))
+
+(def ^:no-doc state (atom {:usekeywords true}))
 
 (def ^:no-doc api-base "https://api.jpx-jquants.com/v1/")
 
@@ -79,15 +84,14 @@
   (check-expired id-token-file ONE_DAY_IN_MS refresh-id-token-file))
 
 (defn get-json 
-  ([endpoint] (get-json endpoint true))
-  ([endpoint usekeywords]
-   (log/log 'jquants-api.http :info nil (str endpoint "> [keywords:" usekeywords "]"))
+  [endpoint]
+   (log/log 'jquants-api.http :info nil (str endpoint "> [" @state "]"))
    (check-tokens)
-   (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body usekeywords)]
+   (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body (:usekeywords @state))]
      ; (log/log 'jquants-api.http :info nil body)
      (log/log 'jquants-api.http :info nil edn)
      (println body)
-     edn)))
+     edn))
 
 (defn listed-sections [& args]
   (get-json (str api-base "listed/sections")))
@@ -102,7 +106,7 @@
                    "code=" (args :code)
                    (if (args :to) (str "&to=" (args :to)) "")
                    (if (args :from) (str "&from=" (args :from)) "")
-                   "&date=" (args :date)) (if (not (nil? (args :usekeywords))) (args :usekeywords) true))
+                   "&date=" (args :date)))
     (into [] (map daily args))))
 
 (defn statements [args]
@@ -179,11 +183,21 @@
 
 ; java
 
+(defn ^:no-doc -init[]
+  (reset! state {:usekeywords false})
+  [[] (ref {})])
+
 (defn -daily 
   ([_ code date]
-   (daily {:code code :date date :usekeywords false}))
+   (daily {:code code :date date}))
   ([_ code from to]
-   (daily {:code code :from from :to to :usekeywords false})))
+   (daily {:code code :from from :to to})))
+
+(defn -statements[_ code date]
+  (statements {:code code :date date}))
+
+(defn -listedInfo[_ code]
+  (listed-info {:code code}))
 
 (defn -main [& args]
   (println "Does nothing yet"))
