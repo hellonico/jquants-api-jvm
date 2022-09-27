@@ -39,7 +39,7 @@ For each function call, the returned data structure is according the jquants api
 
 
 ```clojure
-(daily [{:code 86970 :date 20220118}{:code 86970 :date 20220118}])
+(daily {:code 86970 :date 20220118})
 
 ;; {:daily_quotes [{:AdjustmentVolume 498800.0
 ;;                  :TurnoverValue    1.2302805E9
