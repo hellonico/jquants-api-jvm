@@ -7,6 +7,8 @@ import org.apache.commons.jxpath.JXPathContext;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.lang.String.*;
+
 /**
  * Hello Jquants in java
  *
@@ -53,6 +55,7 @@ public class JQuantsApiSample {
     }
 
     private static void chartMe(jquantsapi api) {
+        // https://quickchart.io/documentation/#library-java
         String from = "20220301", to = "20220505";
         Map<?,?> result = api.daily(code, from, to);
         JXPathContext context = JXPathContext.newContext(result);
@@ -60,17 +63,12 @@ public class JQuantsApiSample {
         QuickChart chart = new QuickChart();
         chart.setWidth(500);
         chart.setHeight(300);
-        chart.setConfig("{"
-                + "    type: 'line',"
-                + "    data: {"
-                + "        labels: "+ context.selectNodes("//Date")+","
-                + "        datasets: [{"
-                + "            label: 'Open',"
-                + "            data: "+ context.selectNodes("//Open")
-                + "        }]"
-                + "    }"
-                + "}"
-        );
+        String config =
+                format("{type: 'line',data: {labels: %s , datasets: [{label: 'Open', data:%s ,fill: false}, {label: 'Close', data:%s ,fill: false}]}}",
+                        context.selectNodes("//Date"),
+                        context.selectNodes("//Open"),
+                        context.selectNodes("//Close"));
+        chart.setConfig(config);
 
         System.out.println(chart.getUrl());
     }

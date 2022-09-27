@@ -5,28 +5,23 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/hellonico/jquants-api-jvm/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/hellonico/jquants-api-jvm/tree/master)
 
 
-![](doc/preview.png)
-
 # Goal
 
-jquants-api is a Clojure Wrapper around the [jquants api](https://jpx-jquants.com/).
+jquants-api is a Clojure/JVM Wrapper around the [jquants api](https://jpx-jquants.com/).
 
-It is hosted on [Clojars](https://clojars.org/net.clojars.hellonico/jquants-api-jvm).
+The http based [jquants-api](https://jpx.gitbook.io/j-quants-api-en/api-reference/) propose a diverse set of daily financial data, like: 
 
-The [jquants-api](https://jpx.gitbook.io/j-quants-api-en/api-reference/) propose a diverse set of daily financial data: 
-
-- Listed Issue Information
-- Stock Price Information
-- Financial Information
-
-With endpoints for each of them.
+- [Listed Issue](https://jpx.gitbook.io/j-quants-api-en/api-reference/listed-api) Information
+- [Stock Price](https://jpx.gitbook.io/j-quants-api-en/api-reference/prices-api) Information
+- [Market](https://jpx.gitbook.io/j-quants-api-en/api-reference/markets-api) Information
 
 To use the jquants api, You first need to [register and create an account](https://application.jpx-jquants.com/register). 
 
 ![](doc/register.png)
 
-To use this API, you need to either:
-- use the login with your username and password, or
+Once you are registered, to setup your credentials for API access, you either need to:
+
+- use the login function with your username and password, or
 - create a login file as shown below:
 
 ```clojure
@@ -34,11 +29,34 @@ To use this API, you need to either:
 {:mailaddress "youremail@address.com" :password "yourpassword"}
 ```
 
-The jquants-api specifies a refresh token and an id token to get and refresh but this wrapper will refresh those tokens as needed without the user having to do anything.
+Note that the login function simply outputs a file at the needed location.
+
+__The jquants-api specifies a refresh token and an id token to get and refresh but this wrapper will refresh those tokens as needed without the user having to do anything.__
+
+# Usage
+
+For each function call, the returned data structure is according the jquants api, turned into Clojure data structures / maps with keywords as keys based on the json data.
+
+
+```clojure
+(daily [{:code 86970 :date 20220118}{:code 86970 :date 20220118}])
+; 
+```
+
+```clojure
+(statements {:code 869701 :date 20220727})
+; 
+```
+
+```clojure
+(listed-info {:code 10000})
+; 
+```
+
 
 # Extra Code for the Wrapper
 
-The wrapper creates a local cache to get daily quotes based on fuzzy search for the name of the entity to get the quotes from.
+The wrapper can also create a local cache to get daily quotes based on fuzzy search for the name of the entity to get the quotes from.
 
 Meaning, instead of :
 
@@ -49,38 +67,30 @@ Meaning, instead of :
 You can do:
 ```clojure
 (daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20220118})
-
 ```
 
-The returned data structure for either call is according the jquants api, turned into Clojure structure / maps with keywords as keys.
+# Charting
 
+There is a [charting example](./examples/charting-with-ox/src/hellonico/charting.clj) based on the [Ox](https://github.com/metasoarous/oz)
 
-## Building
+Which would open a browser window and show the following graph:
 
+![](doc/preview.png)
 
-Invoke a library API function from the command-line:
+# Java Integration
 
-    $ clojure -X hellonico.jquants-api/daily-fuzzy {:CompanyNameEnglish "KAWASE" :date 20220920} 
-    
+This JQuants wrapper can also be called natively from Java code, with Maps as returned object from API calls.
+Maps in Java can be accessed using query using [JXPath](https://commons.apache.org/proper/commons-jxpath/), as shown in the example below:
 
-Run the project's tests (they'll fail until you edit them):
+```java
+Map<?,?> result = api.daily("24130", "20220301");
+JXPathContext context = JXPathContext.newContext(result);
+Double open = (Double) context.getValue("/daily_quotes[1]/Open");
+System.out.printf("Quote for %s on day %s is %f\n", code, date, open);
 
-    $ clojure -T:build test
-
-Run the project's CI pipeline and build a JAR (this will fail until you edit the tests to pass):
-
-    $ clojure -T:build ci
-
-Install it locally (requires the `ci` task be run first):
-
-    $ clojure -T:build install
-
-Deploy it to Clojars -- needs `CLOJARS_USERNAME` and `CLOJARS_PASSWORD` environment
-variables (requires the `ci` task be run first):
-
-    $ clojure -T:build deploy
-
-Your library will be deployed to net.clojars.hellonico/jquants-api on clojars.org by default.
+// Outputs:
+// Quote for 24130 on day 20220301 is 4315.000000
+```
 
 ## License
 
