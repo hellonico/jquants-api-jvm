@@ -8,9 +8,11 @@
              [daily [String String String] java.util.Map]
              [statements [String String] java.util.Map]
              [listedInfo [String] java.util.Map]
-             ])
+             [companySearch [java.util.Map] java.util.Map]
+             [dailyFuzzy [java.util.Map] java.util.Map]])
   (:require
    [clojure.java.io :as io]
+   [clojure.walk :as walk]
    [clojure.tools.logging :as log]
    [org.httpkit.client :as http]
    [cheshire.core :as json]
@@ -175,7 +177,9 @@
     ))
 
 (defn daily-fuzzy [args]
-  (if (map? args)
+  ;(if (map? args)
+  (println args)
+  (if (instance? java.util.Map args)
     (let [company (first (fuzzy-search args))
           search (merge args company)]
       (daily search))
@@ -198,6 +202,26 @@
 
 (defn -listedInfo[_ code]
   (listed-info {:code code}))
+
+(defn- ^:no-doc stringify-keys
+  "Recursively transforms all map keys from keywords to strings."
+  [m]
+  (let [f (fn [[k v]] (if (keyword? k) [(name k) v] [k v]))]
+    (clojure.walk/postwalk (fn [x] (if (map? x) (into {} (map f x)) x)) m)))
+
+;; (defn string-keys [m]
+;;   (into (empty m) (for [[k v] m] [(.toUpperCase (name k)) v])))
+
+;; (defn keyword-keys [m]
+;;   (into (empty m) (for [[k v] m] [(keyword (.toLowerCase k)) v])))
+
+(defn -companySearch[_ args]
+  (stringify-keys (fuzzy-search args)))
+
+(defn -dailyFuzzy [_ args]
+  ;; (println (type args))
+  ;; (println (map? args))
+  (stringify-keys (daily-fuzzy (walk/keywordize-keys (into (hash-map) args)))))
 
 (defn -main [& args]
   (println "Does nothing yet"))

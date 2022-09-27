@@ -1,14 +1,12 @@
 package info.hellonico.jquantsapi;
 
+import clojure.lang.Keyword;
 import com.github.signaflo.timeseries.TimeSeries;
 import hellonico.jquantsapi;
 import io.quickchart.QuickChart;
 import org.apache.commons.jxpath.JXPathContext;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static java.lang.String.*;
@@ -35,7 +33,16 @@ public class JQuantsApiSample {
 
         movingAverage(api);
 
+        fuzzy(api);
+
         System.exit(0);
+    }
+
+    private static void fuzzy(jquantsapi api) {
+        String from = "20220301", to = "20220401";
+        Map m = Map.of("CompanyNameEnglish","Japan Exchange","from", from,"to", to);
+        Map result = api.dailyFuzzy(m);
+        System.out.println(result);
     }
 
     private static void listedInfoAndStatement(jquantsapi api) {
