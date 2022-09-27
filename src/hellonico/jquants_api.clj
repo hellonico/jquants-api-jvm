@@ -3,7 +3,9 @@
    :name hellonico.jquantsapi
    :prefix "-"
    :main true
-   :methods [[daily [String String] java.util.Map]])
+   :methods [[daily [String String] java.util.Map]
+             [daily [String String String] java.util.Map]
+             ])
   (:require
    [clojure.java.io :as io]
    [clojure.tools.logging :as log]
@@ -79,7 +81,7 @@
 (defn get-json 
   ([endpoint] (get-json endpoint true))
   ([endpoint usekeywords]
-   (log/log 'jquants-api.http :info nil endpoint)
+   (log/log 'jquants-api.http :info nil (str endpoint "> [keywords:" usekeywords "]"))
    (check-tokens)
    (let [resp (http/get endpoint (authorization-headers)) body (:body @resp) edn (json/parse-string body usekeywords)]
      (log/log 'jquants-api.http :info nil body)
@@ -99,7 +101,7 @@
                    "code=" (args :code)
                    (if (args :to) (str "&to=" (args :to)) "")
                    (if (args :from) (str "&from=" (args :from)) "")
-                   "&date=" (args :date)) (not (true? (args :usekeywords))))
+                   "&date=" (args :date)) (if (not (nil? (args :usekeywords))) (args :usekeywords) true))
     (into [] (map daily args))))
 
 (defn statements [args]
@@ -176,8 +178,11 @@
 
 ; java
 
-(defn -daily [_ code date]
-  (daily {:code code :date date :usekeywords false}))
+(defn -daily 
+  ([_ code date]
+   (daily {:code code :date date :usekeywords false}))
+  ([_ code from to]
+   (daily {:code code :from from :to to :usekeywords false})))
 
 (defn -main [& args]
   (println "Does nothing yet"))
