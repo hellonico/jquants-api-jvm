@@ -40,17 +40,81 @@ For each function call, the returned data structure is according the jquants api
 
 ```clojure
 (daily [{:code 86970 :date 20220118}{:code 86970 :date 20220118}])
-; 
+
+;; {:daily_quotes [{:AdjustmentVolume 498800.0
+;;                  :TurnoverValue    1.2302805E9
+;;                  :AdjustmentOpen   2482.0
+;;                  :Low              2440.5
+;;                  :AdjustmentClose  2465.0
+;;                  :Volume           498800.0
+;;                  :High             2489.0
+;;                  :Date             "20220118"
+;;                  :AdjustmentHigh   2489.0
+;;                  :Code             "86970"
+;;                  :Close            2465.0
+;;                  :AdjustmentFactor 1.0
+;;                  :AdjustmentLow    2440.5
+;;                  :Open             2482.0}]}
 ```
 
 ```clojure
 (statements {:code 869701 :date 20220727})
-; 
+
+;; {:statements [{:ForecastDividendPerShareAnnual                                               "52.0"
+;;                :ForecastOperatingProfit                                                      "65500000000"
+;;                :ForecastDividendPerShare2ndQuarter                                           "26.0"
+;;                :ForecastOrdinaryProfit                                                       "65500000000"
+;;                :Profit                                                                       "12089000000"
+;;                :TypeOfDocument                                                               "1QFinancialStatements_Consolidated_IFRS"
+;;                :ResultDividendPerShareFiscalYearEnd                                          ""
+;;                :DisclosedUnixTime                                                            "1658923200.0"
+;;                :ChangesInAccountingEstimates                                                 "false"
+;;                :DisclosureNumber                                                             "20220726504583"
+;;                :ResultDividendPerShare3rdQuarter                                             ""
+;;                :MaterialChangesInSubsidiaries                                                "false"
+;;                :ApplyingOfSpecificAccountingOfTheQuarterlyFinancialStatements                ""
+;;                :NumberOfTreasuryStockAtTheEndOfFiscalYear                                    "1938843"
+;;                :EarningsPerShare                                                             "22.93"
+;;                :OperatingProfit                                                              "17777000000"
+;;                :NetSales                                                                     "33576000000"
+;;                :LocalCode                                                                    "86970"
+;;                :DisclosedDate                                                                "2022-07-27"
+;;                :ResultDividendPerShare1stQuarter                                             "－"
+;;                :Equity                                                                       "310098000000"
+;;                :BookValuePerShare                                                            ""
+;;                :CurrentPeriodEndDate                                                         "2022-06-30"
+;;                :DisclosedTime                                                                "12:00:00"
+;;                :ResultDividendPerShareAnnual                                                 ""
+;;                :ChangesOtherThanOnesBasedOnRevisionsOfAccountingStandard                     "false"
+;;                :OrdinaryProfit                                                               "17790000000"
+;;                :RetrospectiveRestatement                                                     ""
+;;                :ForecastProfit                                                               "45000000000"
+;;                :EquityToAssetRatio                                                           "0.004"
+;;                :AverageNumberOfShares                                                        "527204054"
+;;                :CurrentFiscalYearEndDate                                                     "2023-03-31"
+;;                :ForecastNetSales                                                             "132500000000"
+;;                :TotalAssets                                                                  "76048180000000"
+;;                :ResultDividendPerShare2ndQuarter                                             ""
+;;                :ChangesBasedOnRevisionsOfAccountingStandard                                  "false"
+;;                :CurrentFiscalYearStartDate                                                   "2022-04-01"
+;;                :ForecastDividendPerShare1stQuarter                                           ""
+;;                :ForecastEarningsPerShare                                                     "85.42"
+;;                :ForecastDividendPerShareFiscalYearEnd                                        "26.0"
+;;                :ForecastDividendPerShare3rdQuarter                                           "－"
+;;                :NumberOfIssuedAndOutstandingSharesAtTheEndOfFiscalYearIncludingTreasuryStock "528578441"
+;;                :TypeOfCurrentPeriod                                                          "1Q"}]}
 ```
 
 ```clojure
 (listed-info {:code 10000})
-; 
+
+;; {:info [{:Code               "86970"
+;;          :UpdateDate         "20220927"
+;;          :CompanyNameFull    "（株）日本取引所グループ"
+;;          :MarketCode         "A"
+;;          :CompanyName        "ＪＰＸ"
+;;          :CompanyNameEnglish "Japan Exchange Group,Inc."
+;;          :SectorCode         "7200"}]}
 ```
 
 
