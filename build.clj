@@ -5,7 +5,7 @@
             [org.corfield.build :as bb]))
 
 (def lib 'net.clojars.hellonico/jquants-api-jvm)
-(def version "0.2.5")
+(def version "0.2.6")
 #_ ; alternatively, use MAJOR.MINOR.COMMITS:
 (def version (format "1.0.%s" (b/git-count-revs nil)))
 
@@ -24,6 +24,9 @@
       :out
       str/trim))
 
+(def class-dir "target/classes")
+(def basis (b/create-basis {:project "deps.edn"}))
+
 (defn ci "Run the CI pipeline of tests (and build the JAR)." [opts]
   (-> opts
       (assoc :lib lib 
@@ -32,7 +35,8 @@
                    :connection (str "scm:git:" scm-url)
                    :developerConnection (str "scm:git:" scm-url)
                    :url scm-url})
-      (bb/run-tests)
+      ; (bb/run-tests)
+        (b/compile-clj )
       (bb/clean)
       (bb/jar)))
 
@@ -40,6 +44,19 @@
   (-> opts
       (assoc :lib lib :version version)
       (bb/install)))
+
+(defn mine " hello " [ opts]
+  (let [bopts
+        (-> opts
+            (assoc :lib lib
+                   :version version
+                   :main 'hellonico.jquants-api
+                   :basis basis
+                   :src-dirs ["src"]
+                   :class-dir class-dir))]
+    (b/compile-clj bopts)
+    (bb/jar bopts)
+    (bb/install bopts)))
 
 (defn deploy "Deploy the JAR to Clojars." [opts]
   (-> opts
