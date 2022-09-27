@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
  :deps {org.clojure/clojure {:mvn/version "1.11.1"}
         metasoarous/oz {:mvn/version "2.0.0-alpha5"}
-        net.clojars.hellonico/jquants-api {:mvn/version "0.1.0-SNAPSHOT"}
+        net.clojars.hellonico/jquants-api-jvm {:mvn/version "0.2.5"}
         }
  :aliases
  {:test
@@ -12,3 +12,4 @@
   :build {:deps {io.github.seancorfield/build-clj
                  {:git/tag "v0.8.2" :git/sha "0ffdb4c"}}
           :ns-default build}}}
+
