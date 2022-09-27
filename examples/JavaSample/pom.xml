@@ -28,7 +28,7 @@
     <dependency>
       <groupId>net.clojars.hellonico</groupId>
       <artifactId>jquants-api-jvm</artifactId>
-      <version>0.2.7</version>
+      <version>0.2.8</version>
     </dependency>
 
     <dependency>
