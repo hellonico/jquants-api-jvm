@@ -7,3 +7,4 @@ jobs:
       - run: mkdir -p $HOME/.config/jquants && echo "{:mailaddress \"$JQUANTS_USER\" :password \"$JQUANTS_PWD\"}" > $HOME/.config/digima/login.edn
       - run: clojure -T:build test
       - run: cd examples/JavaSample && ./ci.sh
+      
