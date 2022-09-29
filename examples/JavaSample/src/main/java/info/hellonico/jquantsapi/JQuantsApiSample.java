@@ -22,6 +22,9 @@ public class JQuantsApiSample {
     {
 
         jquantsapi api = new jquantsapi();
+//        api.login("john@doe.com", "johndoe");
+//        api.refreshRefreshToken();
+//        api.refreshIdToken();
 
         simple(api);
 
@@ -76,7 +79,7 @@ public class JQuantsApiSample {
 
         QuickChart chart = new QuickChart();
         chart.setWidth(500);
-        chart.setHeight(500);
+        chart.setHeight(300);
 
         String config =
                 format("{type: 'line',data: {labels: %s , datasets: [{label: 'MovingAverage', data:%s ,fill: false}]}}",

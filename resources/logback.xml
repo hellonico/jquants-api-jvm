@@ -19,7 +19,7 @@
                 <fileNamePattern>logs/archived/app.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
                 <maxFileSize>10MB</maxFileSize>
                 <totalSizeCap>20GB</totalSizeCap>
-                <maxHistory>60</maxHistory>
+                <!-- <maxHistory>60</maxHistory> -->
             </rollingPolicy>
         </appender>
 

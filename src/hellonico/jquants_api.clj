@@ -9,6 +9,9 @@
              [statements [String String] java.util.Map]
              [listedInfo [String] java.util.Map]
              [companySearch [java.util.Map] java.util.Map]
+             [login [String String] void]
+             [refreshRefreshToken [] void]
+             [refreshIdToken [] void]
              [dailyFuzzy [java.util.Map] java.util.Map]])
   (:require
    [clojure.java.io :as io]
@@ -21,7 +24,7 @@
    [honey.sql :as sql]
    [honey.sql.helpers :as h]))
 
-(def ^:no-doc config-folder (str (System/getProperty "user.home") "/.config/digima" ))
+(def ^:no-doc config-folder (str (System/getProperty "user.home") "/.config/jquants" ))
 (def ^:no-doc login-file (str config-folder "/login.edn" ))
 (def ^:no-doc refresh-token-file (str config-folder "/refresh_token.edn"))
 (def ^:no-doc id-token-file (str config-folder "/id_token.edn"))
@@ -222,6 +225,15 @@
   ;; (println (type args))
   ;; (println (map? args))
   (stringify-keys (daily-fuzzy (walk/keywordize-keys (into (hash-map) args)))))
+
+(defn -login [_ email password]
+  (login {:mailaddress email :password password}))
+
+(defn -refreshRefreshToken[_]
+  (refresh-refresh-token-file))
+
+(defn -refreshIdToken[_]
+  (refresh-id-token-file))
 
 (defn -main [& args]
   (println "Does nothing yet"))
