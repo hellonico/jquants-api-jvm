@@ -3,7 +3,7 @@
         scicloj/scicloj.ml {:mvn/version "0.2.0"}
         scicloj/tablecloth {:mvn/version "6.094.1"}
         net.java.dev.jna/jna {:mvn/version "5.12.1"}
-        net.clojars.hellonico/jquants-api-jvm {:mvn/version "0.2.9"}
+        net.clojars.hellonico/jquants-api-jvm {:mvn/version "0.2.11"}
 
         scicloj/scicloj.ml.xgboost {:mvn/version "5.1.3"}
         }

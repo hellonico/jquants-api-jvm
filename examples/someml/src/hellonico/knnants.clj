@@ -11,7 +11,7 @@
 
 (def companyNameEnglish "Sony")
 (def quotes
-  (:daily_quotes (api/daily-fuzzy {:CompanyNameEnglish companyNameEnglish :from 20201002 :to 20220930})))
+  (:daily_quotes (api/daily-fuzzy {:CompanyNameEnglish companyNameEnglish :from 20170101 :to 20220930})))
 
 (def df
   (ds/dataset {:x (map #(Integer/parseInt (% :Date)) quotes)
@@ -37,14 +37,18 @@
       pipe-fn
     :metamorph/data (ds/column-values->categorical :y)))
 
-(guess 20220720)
-; 4032
-
 
 (defn one-quote [date]
-  (:Close (first (:daily_quotes (api/daily-fuzzy {:CompanyNameEnglish companyNameEnglish :date date})))))
+      (:Close (first (:daily_quotes (api/daily-fuzzy {:CompanyNameEnglish companyNameEnglish :date date})))))
 
-(one-quote 20220719)
-; 3944
+(defn -main[& args]
+      (guess 20220720)
+      ; 4032
+      (one-quote 20220719)
+      ; 3944
+
+      )
+
+
 
 

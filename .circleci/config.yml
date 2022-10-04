@@ -1,3 +1,4 @@
+version: 2.1
 jobs:
   build:
     docker:
@@ -7,3 +8,4 @@ jobs:
       - run: mkdir -p $HOME/.config/jquants && echo "{:mailaddress \"$JQUANTS_USER\" :password \"$JQUANTS_PWD\"}" > $HOME/.config/jquants/login.edn
       - run: clojure -T:build test
       - run: cd examples/JavaSample && ./ci.sh
+      - run: cd examples/someml && ./ci.sh
