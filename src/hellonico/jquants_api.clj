@@ -106,12 +106,17 @@
 
 (defn daily [args]
   (if (map? args)
-    (get-json (str api-base
-                   "prices/daily_quotes?"
-                   "code=" (args :code)
-                   (if (args :to) (str "&to=" (args :to)) "")
-                   (if (args :from) (str "&from=" (args :from)) "")
-                   "&date=" (args :date)))
+    (let [res      (get-json (str api-base
+                                  "prices/daily_quotes?"
+                                  "code=" (args :code)
+                                  (if (args :to) (str "&to=" (args :to)) "")
+                                  (if (args :from) (str "&from=" (args :from)) "")
+                                  "&date=" (args :date)))
+          quotes (filter #(not (nil? (:Close %))) (:daily_quotes res))]
+      (hash-map :daily_quotes quotes)
+      )
+    ;(filter #(not (nil? (:Close %)))
+
     (into [] (map daily args))))
 
 (defn statements [args]

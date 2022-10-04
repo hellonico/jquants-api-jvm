@@ -28,3 +28,5 @@
 deploy.sh
 jquants.log
 logs
+.idea
+jquants-api.iml

@@ -24,6 +24,12 @@
     (is (= (load-expected "daily_86970_20220118.json")
            (daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20220118})))))
 
+
+(deftest daily-freaking-shougai-test
+  (testing "daily code:86970 :date 20201001"
+    (is (= (load-expected "daily_86970_20201001.json")
+           (daily-fuzzy {:CompanyNameEnglish "Japan Exchange" :date 20201001})))))
+
 (deftest statements-test
   (testing "daily code:86970 :date 20220727"
     (is (= (load-expected "statements_86970_20220118.json")
