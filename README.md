@@ -172,6 +172,12 @@ Which would open a browser window and show the following graph:
 
 ![](doc/preview.png)
 
+# Jupyter Notebook example
+
+There is a notebook example for usage with Jupyter and Charting with oz.
+
+
+
 # Java Integration
 
 This JQuants wrapper can also be called natively from Java code, with Maps as returned object from API calls.
