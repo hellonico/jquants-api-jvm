@@ -166,7 +166,7 @@ You can do:
 
 # Charting
 
-There is a [charting example](./examples/charting-with-ox/src/hellonico/charting.clj) based on the [Ox](https://github.com/metasoarous/oz)
+There is a [charting example](examples/charting-with-oz/src/hellonico/charting.clj) based on the [Ox](https://github.com/metasoarous/oz)
 
 Which would open a browser window and show the following graph:
 
