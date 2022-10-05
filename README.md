@@ -174,8 +174,9 @@ Which would open a browser window and show the following graph:
 
 # Jupyter Notebook example
 
-There is a notebook example for usage with Jupyter and Charting with oz.
+There is a notebook example for usage with Clojure within Jupyter and Charting jquants data with oz.
 
+![](./doc/jupyter.png)
 
 
 # Java Integration
